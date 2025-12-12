@@ -1,0 +1,46 @@
+from fastapi import FastAPI, Query, HTTPException
+
+from prometheus_client import PrometheusClient
+from analyzer import MetricsAnalyzer
+from advisor import ScalingAdvisor
+from models import RecommendationResponse
+
+
+app = FastAPI(
+    title="Kubernetes Auto-Scaling Advisor",
+    description="Analyzes Prometheus metrics and suggests HPA/VPA settings.",
+    version="0.1.0",
+)
+
+prom_client = PrometheusClient()
+analyzer = MetricsAnalyzer()
+advisor = ScalingAdvisor()
+
+
+@app.get("/")
+async def root():
+    return {
+        "message": "Kubernetes Auto-Scaling Advisor API",
+        "docs": "/docs",
+        "example": "/recommendations?namespace=default&app_name=myapp",
+    }
+
+
+@app.get("/recommendations", response_model=RecommendationResponse)
+async def get_recommendations(
+    namespace: str = Query(..., description="Kubernetes namespace"),
+    app_name: str = Query(..., description="App label or deployment name (prefix of pod name)"),
+):
+    """
+    Get scaling recommendations for a given app based on Prometheus metrics.
+    """
+
+    try:
+        raw_metrics = await prom_client.fetch_metrics(namespace=namespace, app_name=app_name)
+    except Exception as exc:
+        # In a real system, you'd handle specific errors/logging.
+        raise HTTPException(status_code=502, detail=f"Failed to query Prometheus: {exc}")
+
+    analysis = analyzer.analyze(raw_metrics)
+    recommendations = advisor.recommend(namespace=namespace, app_name=app_name, analysis=analysis)
+    return recommendations
