@@ -45,6 +45,27 @@ I am building it step by step to learn:
 
 ---
 
+## What I Learned / Why I Built This
+
+This project was designed to explore how AI-assisted automation can help DevOps and SRE workflows.  
+During development, I learned:
+
+- How Prometheus queries and time-series metrics work  
+- How to compute statistical summaries from raw metric data  
+- How HPA and VPA make scaling decisions in Kubernetes  
+- How to design clean, modular services in Python/FastAPI  
+- How to build a structured API with validation, documentation, and consistent response models  
+
+The long-term goal is to replace the rule-based advisor with a true LLM that can:
+- Analyze complex metric patterns  
+- Suggest scaling policies  
+- Explain decisions  
+- Generate YAML snippets automatically  
+
+This project represents the first version of that idea.
+
+---
+
 ## Goals
 
 - Build a small API that:
@@ -52,3 +73,4 @@ I am building it step by step to learn:
   2. Calculates simple summaries (average, p95, max).
   3. Returns a JSON response with suggested HPA/VPA values and explanations.
 - Later: add a simple UI and real AI integration.
+
