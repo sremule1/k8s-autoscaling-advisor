@@ -15,6 +15,8 @@ This project is an experimental **Auto-Scaling Advisor** for Kubernetes workload
 ---
 
 ### Example API Response
+
+```json
 {
   "namespace": "default",
   "app_name": "myapp",
@@ -31,23 +33,12 @@ This project is an experimental **Auto-Scaling Advisor** for Kubernetes workload
   },
   "reasoning": "CPU usage is moderate (20–60% at p95). Recommend a balanced HPA range and moderate requests.",
   "analysis": {
-    "cpu": {
-      "name": "cpu",
-      "avg": 0.1575,
-      "p95": 0.2,
-      "max": 0.2
-    },
-    "memory": {
-      "name": "memory",
-      "avg": 0.1575,
-      "p95": 0.2,
-      "max": 0.2
-    },
+    "cpu": { "name": "cpu", "avg": 0.1575, "p95": 0.2, "max": 0.2 },
+    "memory": { "name": "memory", "avg": 0.1575, "p95": 0.2, "max": 0.2 },
     "rps": null,
     "latency": null
   }
 }
-
 
 ---
 
@@ -117,6 +108,7 @@ This project represents the first version of that idea.
   2. Calculates simple summaries (average, p95, max).
   3. Returns a JSON response with suggested HPA/VPA values and explanations.
 - Later: add a simple UI and real AI integration.
+
 
 
 
